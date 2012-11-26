@@ -130,14 +130,14 @@ PRODUCT_PACKAGES += \
     uiautomator \
     telephony-common \
     mms-common
-
-# SELinux packages
+    
+# SELinux packages		
 PRODUCT_PACKAGES += \
     sepolicy \
     file_contexts \
     seapp_contexts \
     property_contexts \
-    mac_permissions.xml
+    mac_permissions.xml 
 
 # host-only dependencies
 ifeq ($(WITH_HOST_DALVIK),true)
