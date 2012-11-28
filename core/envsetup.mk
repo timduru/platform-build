@@ -126,6 +126,10 @@ endif
 # 		TARGET_OS = { linux }
 # 		TARGET_ARCH = { arm | x86 | mips }
 
+
+ifeq ($(TARGET_ARCH),)
+TARGET_ARCH := arm
+endif
 TARGET_OS := linux
 # TARGET_ARCH should be set by BoardConfig.mk and will be checked later
 
