@@ -334,14 +334,14 @@ PRODUCT_COPY_FILES := \
 PRODUCT_PROPERTY_OVERRIDES := \
     $(strip $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PROPERTY_OVERRIDES))
 
-PRODUCT_BUILD_PROP_OVERRIDES := \
-    $(strip $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_BUILD_PROP_OVERRIDES))
-
 # A list of property assignments, like "key = value", with zero or more
 # whitespace characters on either side of the '='.
 # used for adding properties to default.prop
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
     $(strip $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_DEFAULT_PROPERTY_OVERRIDES))
+
+PRODUCT_BUILD_PROP_OVERRIDES := \
+	$(strip $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_BUILD_PROP_OVERRIDES))
 
 # Should we use the default resources or add any product specific overlays
 PRODUCT_PACKAGE_OVERLAYS := \

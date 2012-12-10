@@ -130,14 +130,6 @@ PRODUCT_PACKAGES += \
     uiautomator \
     telephony-common \
     mms-common
-    
-# SELinux packages		
-PRODUCT_PACKAGES += \
-    sepolicy \
-    file_contexts \
-    seapp_contexts \
-    property_contexts \
-    mac_permissions.xml 
 
 # host-only dependencies
 ifeq ($(WITH_HOST_DALVIK),true)
@@ -153,6 +145,15 @@ ifeq ($(WITH_HOST_DALVIK),true)
         libssl \
         libz-host \
         dalvik
+endif
+
+ifeq ($(HAVE_SELINUX),true)
+    PRODUCT_PACKAGES += \
+        sepolicy \
+        file_contexts \
+        seapp_contexts \
+        property_contexts \
+        mac_permissions.xml
 endif
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
