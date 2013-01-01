@@ -23,7 +23,6 @@ PRODUCT_PACKAGES := \
     DeskClock \
     Bluetooth \
     Calculator \
-    Calendar \
     CertInstaller \
     DrmProvider \
     Email \
@@ -33,7 +32,6 @@ PRODUCT_PACKAGES := \
     InputDevices \
     LatinIME \
     Launcher2 \
-    Music \
     MusicFX \
     Provision \
     Phone \
