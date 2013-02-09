@@ -591,7 +591,16 @@ ifeq (,$(filter true, $(TARGET_NO_KERNEL) $(TARGET_NO_RECOVERY)))
 
 INSTALLED_RECOVERYIMAGE_TARGET := $(PRODUCT_OUT)/recovery.img
 
-recovery_initrc := $(call include-path-for, recovery)/etc/init.rc
+ifneq ($(TARGET_RECOVERY_INITRC),)
+  recovery_initrc := $(TARGET_RECOVERY_INITRC) # Use target specific init.rc
+else
+ifeq ($(BOARD_USES_RECOVERY_CHARGEMODE),true)
+  $(error BOARD_USES_RECOVERY_CHARGEMODE is deprecated. Please see http://bit.ly/opcSJZ on how to properly implement chargemode in recovery. Or just remove the BOARD_USES_RECOVERY_CHARGEMODE if you are lazy. I will hate you though. -Koush)
+else
+  recovery_initrc := $(call include-path-for, recovery)/etc/init.rc
+endif
+endif
+recovery_uncompressed_ramdisk := $(PRODUCT_OUT)/ramdisk-recovery.cpio
 recovery_kernel := $(INSTALLED_KERNEL_TARGET) # same as a non-recovery system
 recovery_ramdisk := $(PRODUCT_OUT)/ramdisk-recovery.img
 recovery_build_prop := $(INSTALLED_BUILD_PROP_TARGET)
@@ -652,6 +661,7 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) \
 		$(INSTALLED_RAMDISK_TARGET) \
 		$(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) \
 		$(recovery_binary) \
+		$(recovery_initrc) \
 		$(recovery_initrc) $(recovery_kernel) \
 		$(INSTALLED_2NDBOOTLOADER_TARGET) \
 		$(recovery_build_prop) $(recovery_resource_deps) \
@@ -665,19 +675,43 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) \
 	$(hide) cp -R $(TARGET_ROOT_OUT) $(TARGET_RECOVERY_OUT)
 	@echo Modifying ramdisk contents...
 	$(hide) rm -f $(TARGET_RECOVERY_ROOT_OUT)/init*.rc
+	$(hide) cp -f $(recovery_initrc) $(TARGET_RECOVERY_ROOT_OUT)/init.rc
 	$(hide) cp -f $(recovery_initrc) $(TARGET_RECOVERY_ROOT_OUT)/
 	$(hide) -cp $(TARGET_ROOT_OUT)/init.recovery.*.rc $(TARGET_RECOVERY_ROOT_OUT)/
 	$(hide) cp -f $(recovery_binary) $(TARGET_RECOVERY_ROOT_OUT)/sbin/
+	mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/system/bin
 	$(hide) cp -rf $(recovery_resources_common) $(TARGET_RECOVERY_ROOT_OUT)/
 	$(hide) $(foreach item,$(recovery_resources_private), \
 	  cp -rf $(item) $(TARGET_RECOVERY_ROOT_OUT)/)
+	$(foreach item,$(recovery_root_private), \
+	  cp -rf $(item) $(TARGET_RECOVERY_OUT)/)
 	$(hide) $(foreach item,$(recovery_fstab), \
 	  cp -f $(item) $(TARGET_RECOVERY_ROOT_OUT)/etc/recovery.fstab)
 	$(hide) cp $(RECOVERY_INSTALL_OTA_KEYS) $(TARGET_RECOVERY_ROOT_OUT)/res/keys
 	$(hide) cat $(INSTALLED_DEFAULT_PROP_TARGET) $(recovery_build_prop) \
 	        > $(TARGET_RECOVERY_ROOT_OUT)/default.prop
-	$(hide) $(MKBOOTFS) $(TARGET_RECOVERY_ROOT_OUT) | $(MINIGZIP) > $(recovery_ramdisk)
 	
+$(recovery_uncompressed_ramdisk): $(MINIGZIP) \
+	$(TARGET_RECOVERY_ROOT_TIMESTAMP)
+	@echo -e ${CL_CYN}"----- Making uncompressed recovery ramdisk ------"${CL_RST}
+	$(MKBOOTFS) $(TARGET_RECOVERY_ROOT_OUT) > $@
+
+$(recovery_ramdisk): $(MKBOOTFS) \
+	$(recovery_uncompressed_ramdisk)
+	@echo -e ${CL_CYN}"----- Making recovery ramdisk ------"${CL_RST}
+	$(MINIGZIP) < $(recovery_uncompressed_ramdisk) > $@
+
+ifndef BOARD_CUSTOM_BOOTIMG_MK
+$(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) \
+		$(recovery_ramdisk) \
+		$(recovery_kernel)
+	@echo -e ${CL_CYN}"----- Making recovery image ------"${CL_RST}
+	$(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
+	$(hide) $(call assert-max-image-size,$@,$(BOARD_RECOVERYIMAGE_PARTITION_SIZE),raw)
+	@echo -e ${CL_CYN}"Made recovery image: $@"${CL_RST}
+endif
+
+
 	$(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
 	$(hide) $(call assert-max-image-size,$@,$(BOARD_RECOVERYIMAGE_PARTITION_SIZE),raw)
 	@echo ----- Made recovery image: $@ --------
@@ -693,6 +727,14 @@ endif
 
 .PHONY: recoveryimage
 recoveryimage: $(INSTALLED_RECOVERYIMAGE_TARGET) $(RECOVERY_RESOURCE_ZIP)
+
+INSTALLED_RECOVERYZIP_TARGET := $(PRODUCT_OUT)/utilities/update.zip
+$(INSTALLED_RECOVERYZIP_TARGET): $(INSTALLED_RECOVERYIMAGE_TARGET) $(TARGET_OUT)/bin/updater $(HOST_OUT_JAVA_LIBRARIES)/signapk.jar
+	@echo -e ${CL_CYN}"----- Making recovery zip -----"${CL_RST}
+	./build/tools/device/mkrecoveryzip.sh $(PRODUCT_OUT) $(HOST_OUT_JAVA_LIBRARIES)/signapk.jar
+
+.PHONY: recoveryzip
+recoveryzip: $(INSTALLED_RECOVERYZIP_TARGET)
 
 ifneq ($(BOARD_NAND_PAGE_SIZE),)
 mkyaffs2_extra_flags := -c $(BOARD_NAND_PAGE_SIZE)
