@@ -95,6 +95,7 @@ OPTIONS.extra_script = None
 OPTIONS.aslr_mode = True
 OPTIONS.worker_threads = 3
 OPTIONS.backuptool = True
+OPTIONS.sizehack = False
 
 def MostPopularKey(d, default):
   """Given a dict, return the key corresponding to the largest
@@ -428,9 +429,12 @@ def WriteFullOTAPackage(input_zip, output_zip):
   Item.GetMetadata(input_zip)
   Item.Get("system").SetPermissions(script)
 
-  common.CheckSize(boot_img.data, "boot.img", OPTIONS.info_dict)
+  if OPTIONS.sizehack is not True:
+    common.CheckSize(boot_img.data, "boot.img", OPTIONS.info_dict)
+  
   common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
   script.ShowProgress(0.2, 0)
+
   if OPTIONS.backuptool:
     script.ShowProgress(0.2, 10)
     script.RunBackup("restore")
