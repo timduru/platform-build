@@ -68,6 +68,8 @@ TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
 TARGET_arm_CFLAGS :=    -O3 \
+			-floop-interchange -floop-strip-mine -floop-block \
+                        -flto -use-gold-plugin \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -Wstrict-aliasing=2  \
@@ -89,6 +91,8 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
     ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -O3 \
+                        -floop-interchange -floop-strip-mine -floop-block \
+                        -flto -use-gold-plugin \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=2 \
@@ -179,7 +183,9 @@ else
 TARGET_GLOBAL_CFLAGS += -mno-thumb-interwork
 endif
 
-TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden \
+                        -flto -use-gold-plugin
+ 
 
 # More flags/options can be added here
 TARGET_RELEASE_CFLAGS := \
