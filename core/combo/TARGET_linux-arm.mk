@@ -70,7 +70,6 @@ TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
 TARGET_arm_CFLAGS :=    -O3 \
-			-floop-interchange -floop-strip-mine -floop-block \
                         -flto -use-gold-plugin \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
@@ -93,7 +92,6 @@ ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
     ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -O3 \
-                        -floop-interchange -floop-strip-mine -floop-block \
                         -flto -use-gold-plugin \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
