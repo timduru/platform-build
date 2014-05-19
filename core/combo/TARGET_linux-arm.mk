@@ -75,8 +75,10 @@ TARGET_arm_CFLAGS :=    -O3 \
                         -fstrict-aliasing    \
                         -Wstrict-aliasing=2  \
                         -Werror=strict-aliasing \
-        		-Wno-error=maybe-uninitialized -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=strict-aliasing\
-                        -funswitch-loops
+        		-Wno-error=maybe-uninitialized -Wno-error=uninitialized \
+        		-Wno-unused-variable -Wno-unused-parameter \
+                        -funswitch-loops \
+                        -ftracer -fgcse-sm -fgcse-las
 else
 TARGET_arm_CFLAGS :=    -O2 \
                         -fomit-frame-pointer \
@@ -95,7 +97,8 @@ TARGET_thumb_CFLAGS :=  -mthumb \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=2 \
-                        -Werror=strict-aliasing
+                        -Werror=strict-aliasing \
+                        -ftracer -fgcse-sm -fgcse-las
     else
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
@@ -176,6 +179,10 @@ TARGET_GLOBAL_LDFLAGS += \
 TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
 TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+ifneq ($(DEBUG_NO_STDCXX11),yes)
+  TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
+endif
+
  
 
 # More flags/options can be added here
