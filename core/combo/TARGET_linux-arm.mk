@@ -70,7 +70,7 @@ endif
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
-TARGET_arm_CFLAGS :=    -O3 \
+TARGET_arm_CFLAGS :=    -O3 -DNDEBUG \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -Wstrict-aliasing=2  \
@@ -93,7 +93,7 @@ endif
 ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
     ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
 TARGET_thumb_CFLAGS :=  -mthumb \
-                        -O3 \
+                        -O3 -DNDEBUG \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=2 \
