@@ -70,7 +70,7 @@ endif
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
-TARGET_arm_CFLAGS :=    -O3 -DNDEBUG \
+TARGET_arm_CFLAGS :=    -O3 -DNDEBUG -use-gold-plugin \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -Wstrict-aliasing=2  \
@@ -93,7 +93,7 @@ endif
 ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
     ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
 TARGET_thumb_CFLAGS :=  -mthumb \
-                        -O3 -DNDEBUG \
+                        -O3 -DNDEBUG -use-gold-plugin \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=2 \
@@ -178,7 +178,7 @@ TARGET_GLOBAL_LDFLAGS += \
 
 TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
-TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden -use-gold-plugin
 ifneq ($(DEBUG_NO_STDCXX11),yes)
   TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
 endif
