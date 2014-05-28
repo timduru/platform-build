@@ -178,7 +178,7 @@ TARGET_GLOBAL_LDFLAGS += \
 
 TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
-TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden -use-gold-plugin
+TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden -flto -use-gold-plugin
 ifneq ($(DEBUG_NO_STDCXX11),yes)
   TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
 endif
@@ -213,8 +213,10 @@ endif
 # Define LTO (Link-Time Optimization) options.
 
 TARGET_LTO_CFLAGS :=
+TARGET_LTO_LDFLAGS :=
 ifneq ($(DEBUG_NO_LTO),yes)
-TARGET_LTO_CFLAGS := -flto -fno-toplevel-reorder
+TARGET_LTO_CFLAGS := -flto -fno-toplevel-reorder -fuse-linker-plugin
+TARGET_LTO_LDFLAGS := -Wl,-flto
 endif
 
 # Define FDO (Feedback Directed Optimization) options.
