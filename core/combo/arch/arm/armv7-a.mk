@@ -4,6 +4,21 @@
 ARCH_ARM_HAVE_ARMV7A            := true
 ARCH_ARM_HAVE_VFP               := true
 
+ifeq ($(strip $(TARGET_ARCH_VARIANT_FPU)),neon)
+ARCH_ARM_HAVE_NEON              := true
+else
+ARCH_ARM_HAVE_NEON              :=
+endif
+
+ifeq ($(strip $(TARGET_ARCH_VARIANT_CPU)),)
+TARGET_ARCH_VARIANT_CPU         := cortex-a9
+endif
+
+ifeq ($(strip $(TARGET_CPU_SMP)),true)
+ARCH_ARM_HAVE_TLS_REGISTER      := true
+endif
+
+
 ifeq ($(strip $(TARGET_CPU_VARIANT)), cortex-a15)
 	arch_variant_cflags := -mcpu=cortex-a15
 else
