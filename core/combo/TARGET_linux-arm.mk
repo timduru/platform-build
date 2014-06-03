@@ -31,7 +31,7 @@
 # version.
 #
 ifeq ($(strip $(TARGET_ARCH_VARIANT)),)
-TARGET_ARCH_VARIANT := armv5te
+TARGET_ARCH_VARIANT := armv7-a
 endif
 
 ifeq ($(strip $(TARGET_GCC_VERSION_EXP)),)
