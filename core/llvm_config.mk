@@ -15,6 +15,7 @@ endef
 
 CLANG_CONFIG_EXTRA_CFLAGS := \
   -D__compiler_offsetof=__builtin_offsetof \
+  -O3 -Qunused-arguments -Wno-unknown-warning-option \
 
 CLANG_CONFIG_UNKNOWN_CFLAGS := \
   -funswitch-loops
