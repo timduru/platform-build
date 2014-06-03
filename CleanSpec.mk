@@ -232,10 +232,7 @@ $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
 
-# 4.4.1
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
-
-# 4.4.2
+# 4.4.3
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 
 # ************************************************
