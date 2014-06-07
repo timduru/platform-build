@@ -77,8 +77,7 @@ TARGET_arm_CFLAGS :=    -O3 -DNDEBUG -use-gold-plugin \
                         -Werror=strict-aliasing \
         		-Wno-error=maybe-uninitialized -Wno-error=uninitialized \
         		-Wno-unused-variable -Wno-unused-parameter \
-                        -funswitch-loops \
-                        -ftracer -fgcse-sm -fgcse-las
+                        -funswitch-loops
 else
 TARGET_arm_CFLAGS :=    -O2 \
                         -fomit-frame-pointer \
@@ -97,8 +96,7 @@ TARGET_thumb_CFLAGS :=  -mthumb \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=2 \
-                        -Werror=strict-aliasing \
-                        -ftracer -fgcse-sm -fgcse-las
+                        -Werror=strict-aliasing
     else
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
