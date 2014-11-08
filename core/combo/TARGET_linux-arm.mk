@@ -79,6 +79,7 @@ else
 $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O2 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
+                        -Wno-error=maybe-uninitialized -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=strict-aliasing  \
                         -funswitch-loops
 endif
 
