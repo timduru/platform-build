@@ -132,10 +132,10 @@ def main(argv):
           add_img_to_target_files.AddVendor(output_zip, prefix="")
         except KeyError:
           pass   # no vendor partition for this device
-        banner("AddUserdata")
-        add_img_to_target_files.AddUserdata(output_zip, prefix="")
-        banner("AddCache")
-        add_img_to_target_files.AddCache(output_zip, prefix="")
+#        banner("AddUserdata")
+#        add_img_to_target_files.AddUserdata(output_zip, prefix="")
+#        banner("AddCache")
+#        add_img_to_target_files.AddCache(output_zip, prefix="")
 
   finally:
     print "cleaning up..."

@@ -103,6 +103,7 @@ def CreateImage(input_dir, info_dict, what, block_list=None):
 
   image_props = build_image.ImagePropFromGlobalDict(info_dict, what)
   fstab = info_dict["fstab"]
+  print fstab
   if fstab:
     image_props["fs_type" ] = fstab["/" + what].fs_type
 
@@ -237,10 +238,10 @@ def AddImagesToTargetFiles(filename):
   if has_vendor:
     banner("vendor")
     AddVendor(output_zip)
-  banner("userdata")
-  AddUserdata(output_zip)
-  banner("cache")
-  AddCache(output_zip)
+#  banner("userdata")
+#  AddUserdata(output_zip)
+#  banner("cache")
+#  AddCache(output_zip)
 
   output_zip.close()
 
