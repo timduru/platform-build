@@ -506,7 +506,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #    ts_text = GetBuildProp("ro.build.date", OPTIONS.info_dict)
 #    script.AssertOlderBuild(ts, ts_text)
 
-  AppendAssertions(script, OPTIONS.info_dict, oem_dict)
+  #AppendAssertions(script, OPTIONS.info_dict, oem_dict)
   device_specific.FullOTA_Assertions()
   script.Print(time.strftime("Built at: %Y-%m-%d %H:%M (%Z)", time.localtime()))
   if OPTIONS.backuptool:
@@ -774,7 +774,7 @@ def WriteBlockIncrementalOTAPackage(target_zip, source_zip, output_zip):
     script.Mount("/oem", recovery_mount_options)
     oem_dict = common.LoadDictionaryFromLines(open(OPTIONS.oem_source).readlines())
 
-  AppendAssertions(script, OPTIONS.target_info_dict, oem_dict)
+  #AppendAssertions(script, OPTIONS.target_info_dict, oem_dict)
   device_specific.IncrementalOTA_Assertions()
 
   # Two-step incremental package strategy (in chronological order,
