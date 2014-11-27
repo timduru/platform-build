@@ -73,7 +73,7 @@ $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O3 \
                         -fstrict-aliasing    \
                         -Wstrict-aliasing=2  \
                         -Werror=strict-aliasing \
-        		-Wno-error=maybe-uninitialized -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=strict-aliasing\
+        		-Wno-error=maybe-uninitialized -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=strict-aliasing -Wno-error=strict-overflow\
                         -funswitch-loops
 else
 $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O2 \
