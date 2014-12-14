@@ -4,9 +4,11 @@ CLANG_CONFIG_arm_EXTRA_ASFLAGS := \
   -no-integrated-as
 
 CLANG_CONFIG_arm_EXTRA_CFLAGS := \
+  -O3 -Qunused-arguments -Wno-unknown-warning-option \
   -no-integrated-as
 
 CLANG_CONFIG_arm_EXTRA_CPPFLAGS := \
+  -O3 -Qunused-arguments -Wno-unknown-warning-option \
   -no-integrated-as
 
 CLANG_CONFIG_arm_EXTRA_LDFLAGS := \
