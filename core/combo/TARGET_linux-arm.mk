@@ -105,14 +105,14 @@ $(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
                         -Werror=strict-aliasing
     endif
 else
-TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS
 endif
 
 # Turn off strict-aliasing if we're building an AOSP variant without the
 # patchset...
 ifeq ($(DEBUG_NO_STRICT_ALIASING),yes)
-TARGET_arm_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
-TARGET_thumb_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
 endif   
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
@@ -180,13 +180,13 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 
 ifneq ($(DEBUG_NO_STDCXX11),yes)
-  TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
+  $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
 endif
 
  
 
 # More flags/options can be added here
-$(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS := \
+$(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS += \
 			-DNDEBUG \
 			-g \
 			-Wstrict-aliasing=2 \
@@ -209,6 +209,7 @@ $(combo_2nd_arch_prefix)TARGET_LIBGCC := $(shell $($(combo_2nd_arch_prefix)TARGE
 $(combo_2nd_arch_prefix)TARGET_LIBATOMIC := $(shell $($(combo_2nd_arch_prefix)TARGET_CC) \
         $($(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS) -print-file-name=libatomic.a)
 endif
+
 
 KERNEL_HEADERS_COMMON := $(libc_root)/kernel/uapi
 KERNEL_HEADERS_ARCH   := $(libc_root)/kernel/uapi/asm-$(TARGET_$(combo_2nd_arch_prefix)ARCH)
