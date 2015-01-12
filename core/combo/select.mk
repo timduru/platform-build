@@ -51,7 +51,7 @@ $(combo_var_prefix)HAVE_KERNEL_MODULES := 0
 
 $(combo_var_prefix)GLOBAL_CFLAGS := -O3 -DNDEBUG -fno-exceptions -Wno-multichar
 $(combo_var_prefix)RELEASE_CFLAGS := -O3 -g -fno-strict-aliasing
-$(combo_var_prefix)GLOBAL_CPPFLAGS :=
+$(combo_var_prefix)GLOBAL_CPPFLAGS := -O3 -DNDEBUG
 $(combo_var_prefix)GLOBAL_LDFLAGS :=
 $(combo_var_prefix)GLOBAL_ARFLAGS := crsPD
 $(combo_var_prefix)GLOBAL_LD_DIRS :=

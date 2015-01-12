@@ -68,7 +68,7 @@ $(combo_2nd_arch_prefix)TARGET_STRIP := $($(combo_2nd_arch_prefix)TARGET_TOOLS_P
 $(combo_2nd_arch_prefix)TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
-$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O3 \
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O3 -DNDEBUG \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -Wstrict-aliasing=2  \
@@ -177,7 +177,12 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_LDFLAGS += \
 
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
+ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -O3 -DNDEBUG -fvisibility-inlines-hidden
+$(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS += -O3 
+else
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+endif
 
 ifneq ($(DEBUG_NO_STDCXX11),yes)
   $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
