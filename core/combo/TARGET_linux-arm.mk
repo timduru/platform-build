@@ -105,7 +105,7 @@ $(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
                         -Werror=strict-aliasing
     endif
 else
-$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := $($(combo_2nd_arch_prefix)TARGET_arm_CFLAGS)
 endif
 
 # Turn off strict-aliasing if we're building an AOSP variant without the
