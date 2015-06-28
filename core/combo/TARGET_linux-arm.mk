@@ -109,6 +109,8 @@ ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
   $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS += -fstrict-aliasing
 endif
 
+  $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS += -Wno-error=maybe-uninitialized -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=strict-aliasing -Wno-error=strict-overflow
+
 # Modules can choose to compile some source as thumb. As
 # non-thumb enabled targets are supported, this is treated
 # as a 'hint'. If thumb is not enabled, these files are just
@@ -339,3 +341,5 @@ $(hide) $(PRIVATE_CXX) -nostdlib -Bstatic \
 	-Wl,--end-group \
 	$(if $(filter true,$(PRIVATE_NO_CRT)),,$(PRIVATE_TARGET_CRTEND_O))
 endef
+$(warning TARGET_GLOBAL_CFLAGS=$(TARGET_GLOBAL_CFLAGS))
+
