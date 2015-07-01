@@ -138,6 +138,9 @@ my_asflags += $(LOCAL_ASFLAGS_$($(my_prefix)$(LOCAL_2ND_ARCH_VAR_PREFIX)ARCH)) $
 my_c_includes += $(LOCAL_C_INCLUDES_$($(my_prefix)$(LOCAL_2ND_ARCH_VAR_PREFIX)ARCH)) $(LOCAL_C_INCLUDES_$(my_32_64_bit_suffix))
 my_generated_sources += $(LOCAL_GENERATED_SOURCES_$($(my_prefix)$(LOCAL_2ND_ARCH_VAR_PREFIX)ARCH)) $(LOCAL_GENERATED_SOURCES_$(my_32_64_bit_suffix))
 
+#$(warning my_cflags=$(my_cflags))
+#$(warning my_cppflags=$(my_cppflags))
+
 my_clang := $(LOCAL_CLANG)
 ifdef LOCAL_CLANG_$(my_32_64_bit_suffix)
 my_clang := $(LOCAL_CLANG_$(my_32_64_bit_suffix))
