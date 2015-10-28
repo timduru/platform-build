@@ -211,32 +211,11 @@ $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
 
-# Clean up around the /system/app -> /system/priv-app migration
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
-
-# Clean up old location of generated Java files from aidl
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/JAVA_LIBRARIES/framework_intermediates/src)
-
-# Clean up ApplicationsProvider which is being removed.
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/APPS/ApplicationsProvider_intermediates)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/priv-app/ApplicationsProvider.apk)
-
-# Clean up Moto OMA DM client which isn't ready yet.
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/JAVA_LIBRARIES/com.android.omadm.plugin.dev_intermediates)
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/JAVA_LIBRARIES/com.android.omadm.plugin.diagmon_intermediates)
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/JAVA_LIBRARIES/com.android.omadm.pluginhelper_intermediates)
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/JAVA_LIBRARIES/com.android.omadm.plugin_intermediates)
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/JAVA_LIBRARIES/com.android.omadm.service.api_intermediates)
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/APPS/DMService_intermediates)
-$(call add-clean-step, rm -rf $(OUT_DIR)/target/common/obj/APPS/SprintDM_intermediates)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/priv-app/DMService.apk)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/SprintDM.apk)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/etc/omadm)
-
-# KLP I mean KitKat now API 19.
+# 4.4.1
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
-$(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
+
+# 4.4.2
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 
 # "L" and beyond.
 # Make libart the default runtime
@@ -305,6 +284,9 @@ $(call add-clean-step, rm -rf $(PRODUCT_OUT)/recovery/root/default.prop)
 
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system)
 
+# Switch host builds to Clang by default
+$(call add-clean-step, rm -rf $(OUT_DIR)/host)
+
 # Adding dalvik.vm.dex2oat-filter
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/root/default.prop)
@@ -325,15 +307,69 @@ $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
 
+# Move to libc++ as the default STL.
+$(call add-clean-step, rm -rf $(OUT_DIR))
+
+# dex2oat instruction-set changes
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/root/default.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/recovery/root/default.prop)
+
+# Make GNU++11 the default standard version. This requires a cleanspec because
+# char16_t/char32_t will be real types now instead of typedefs, which means
+# an ABI change since the names will mangle differently.
+$(call add-clean-step, rm -rf $(OUT_DIR))
+
 # 5.1!
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
 
-# 5.1.1!
+# Remove ro.product.locale.language/country and add ro.product.locale
+# instead.
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+
+# On to MNC
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
 $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
+
+# Adding dalvik.vm.usejit
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/root/default.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/recovery/root/default.prop)
+
+# Rename dalvik.vm.usejit to debug.dalvik.vm.usejit
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/root/default.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/recovery/root/default.prop)
+
+# Revert rename dalvik.vm.usejit to debug.dalvik.vm.usejit
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/root/default.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/recovery/root/default.prop)
+
+# Change from interpret-only to verify-at-runtime.
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/root/default.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/recovery/root/default.prop)
+
+# Change PLATFORM_VERSION from MNC to M
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
+
+# 23 is becoming alive!!!
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
+
+# 23 is becoming more alive!!!
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/app/*)
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
+
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
 
 # ************************************************
 # NEWER CLEAN STEPS MUST BE AT THE END OF THE LIST
