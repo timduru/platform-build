@@ -99,6 +99,13 @@ LOCAL_DISABLE_STRICT := \
 	sensors.flounder \
 	libnvvisualizer \
 	libskia \
+	OpenWnn \
+	libwnndict \
+	libfuse \
+	libssh \
+	libstlport \
+	fio \
+	tcpdump \
 	libiprouteutil
 
 LOCAL_FORCE_DISABLE_STRICT := \
