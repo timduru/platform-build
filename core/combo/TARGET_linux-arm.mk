@@ -71,16 +71,28 @@ endef
 
 $(combo_2nd_arch_prefix)TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O2 \
-                        -fomit-frame-pointer \
+
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS := -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
-$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
-                        -Os \
-                        -fomit-frame-pointer \
-                        -fno-strict-aliasing
+ifeq ($(STRICT_ALIASING),true)
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -mthumb -fomit-frame-pointer
+else
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -mthumb -fomit-frame-pointer -fno-strict-aliasing
+endif
+
+
+ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
+FULL_OPTIMIZATION_FLAGS:= -O3
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS += $(FULL_OPTIMIZATION_FLAGS)
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS += $(FULL_OPTIMIZATION_FLAGS)
+else
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS +=    -O2
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS += -Os
+endif
+
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
@@ -147,6 +159,11 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_LDFLAGS += \
 
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
+ifeq ($(ARCH_ARM_HIGH_OPTIMIZATION),true)
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += $(FULL_OPTIMIZATION_FLAGS) -DNDEBUG
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += $(FULL_OPTIMIZATION_FLAGS)
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_LDFLAGS += -Wl,-O3 -Wl,--as-needed -Wl,--gc-sections -Wl,--relax -Wl,--sort-common
+endif
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 
 # More flags/options can be added here
