@@ -73,10 +73,12 @@ $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O2 \
                         -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
-$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
-                        -Os \
-                        -fomit-frame-pointer \
-                        -fno-strict-aliasing
+ifeq ($(STRICT_ALIASING),true)
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -mthumb -Os -fomit-frame-pointer
+else
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -mthumb -Os -fomit-frame-pointer -fno-strict-aliasing
+endif
+
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
@@ -109,8 +111,6 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += \
 			$(arch_variant_cflags) \
 			-include $(android_config_h) \
 			-I $(dir $(android_config_h))
-#KK
-  $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS += -Wno-error=maybe-uninitialized -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=strict-aliasing -Wno-error=strict-overflow
 
 # The "-Wunused-but-set-variable" option often breaks projects that enable
 # "-Wall -Werror" due to a commom idiom "ALOGV(mesg)" where ALOGV is turned
@@ -121,7 +121,6 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -fno-builtin-sin \
 			-fno-strict-volatile-bitfields
 endif
 
-#$(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -Wno-error=uninitialized -Wno-error=unused-parameter
 
 # This is to avoid the dreaded warning compiler message:
 #   note: the mangling of 'va_list' has changed in GCC 4.4

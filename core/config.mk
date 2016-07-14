@@ -230,6 +230,9 @@ ifeq ($(TARGET_CPU_ABI),)
 endif
 TARGET_CPU_ABI2 := $(strip $(TARGET_CPU_ABI2))
 
+include $(BUILD_SYSTEM)/uber.mk
+
+
 # $(1): os/arch
 define select-android-config-h
 build/core/combo/include/arch/$(1)/AndroidConfig.h
