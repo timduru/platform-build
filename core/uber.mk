@@ -258,18 +258,6 @@ DISABLE_SANITIZE_LEAK := \
 	$(NOOP_BLUETOOTH) \
 	$(NO_OPTIMIZATIONS)
 
-################
-# Cortex Tuning
-################
-LOCAL_DISABLE_CORTEX := \
-	bluetooth.default 
-
-ifeq (arm,$(TARGET_ARCH))
-CORTEX_FLAGS := \
-        -mcpu=cortex-a57.cortex-a53 \
-        -mtune=cortex-a57.cortex-a53
-endif
-
 # OpenMP
 ifeq ($(ENABLE_GOMP),true)
 LOCAL_DISABLE_GOMP := \
