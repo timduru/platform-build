@@ -133,22 +133,6 @@ endef
 # Set common values
 # ###############################################################
 
-# These can be changed to modify both host and device modules.
-COMMON_GLOBAL_CFLAGS:= -DANDROID -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith
-#KK
-COMMON_GLOBAL_CFLAGS+= -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-sign-compare
-
-COMMON_RELEASE_CFLAGS:= -DNDEBUG -UDEBUG
-
-COMMON_GLOBAL_CPPFLAGS:= $(COMMON_GLOBAL_CFLAGS) -Wsign-promo -std=gnu++11
-COMMON_RELEASE_CPPFLAGS:= $(COMMON_RELEASE_CFLAGS)
-
-GLOBAL_CFLAGS_NO_OVERRIDE :=  \
-    -Werror=int-to-pointer-cast \
-    -Werror=pointer-to-int-cast \
-
-GLOBAL_CPPFLAGS_NO_OVERRIDE :=
-
 # Set the extensions used for various packages
 COMMON_PACKAGE_SUFFIX := .zip
 COMMON_JAVA_PACKAGE_SUFFIX := .jar
@@ -658,6 +642,13 @@ endif
 # These can be changed to modify both host and device modules.
 COMMON_GLOBAL_CFLAGS:= -DANDROID -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith
 COMMON_RELEASE_CFLAGS:= -DNDEBUG -UDEBUG
+
+#KK
+COMMON_GLOBAL_CFLAGS+= -Wno-error=uninitialized -Wno-error=unused-parameter -Wno-error=unused-variable -Wno-sign-compare -Wno-return-type-c-linkage
+
+ifeq ($(BOARD_NEEDS_VECTORIMPL_SYMBOLS),true)
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+endif
 
 # Force gcc to always output color diagnostics.  Ninja will strip the ANSI
 # color codes if it is not running in a terminal.
